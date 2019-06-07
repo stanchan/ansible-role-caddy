@@ -1,0 +1,70 @@
+---
+- name: Check caddy config file
+  stat:
+    path: "{{ caddy_configs_dir }}/Caddyfile"
+  register: caddy_config_exists
+
+- name: Deploy caddy config file
+  copy:
+    src: caddy.yml
+    dest: "{{ caddy_configs_dir }}/Caddyfile"
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0640
+  notify: Restart caddy
+  when: not caddy_config_exists.stat.exists
+
+- name: Deploy caddy config file template
+  template:
+    src: "{{ caddy_config_template }}"
+    dest: "{{ caddy_configs_dir }}/Caddyfile"
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0640
+  notify: Restart caddy
+  when: caddy_config_template != ""
+
+- name: Check key file exists
+  stat:
+    path: "{{ caddy_ssl_key_file }}"
+  register: check_key
+
+- name: Check certificate file exists
+  stat:
+    path: "{{ caddy_ssl_cert_file }}"
+  register: check_cert
+
+- name: Create self-signed SSL cert
+  shell: 'openssl req -new -newkey rsa:4096 -nodes -x509 -rand /dev/urandom -sha256 -days 365 -subj "/C={{ caddy_ssl_gen_configs.country }}/ST={{ caddy_ssl_gen_configs.state }}/L={{ caddy_ssl_gen_configs.city }}/O={{ caddy_ssl_gen_configs.org }}/OU={{ caddy_ssl_gen_configs.unit }}/CN={{ awx_host }}/emailAddress={{ caddy_ssl_gen_configs.email }}" -keyout {{ caddy_ssl_key_file }} -out {{ caddy_ssl_cert_file }}'
+  args:
+    creates: "{{ caddy_ssl_cert_file }}"
+  when:
+    - caddy_ssl == True
+    - check_key.stat.exists == False
+    - check_cert.stat.exists == False
+    - caddy_ssl_key == ""
+    - caddy_ssl_cert == ""
+
+- name: Deploy SSL key
+  copy:
+    src: "{{ caddy_ssl_key }}"
+    dest: "{{ caddy_ssl_key_file }}"
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0600
+  when:
+    - caddy_ssl_key != ""
+    - caddy_ssl == True
+  notify: Restart caddy
+
+- name: Deploy SSL cert
+  copy:
+    src: "{{ caddy_ssl_cert }}"
+    dest: "{{ caddy_ssl_cert_file }}"
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0600
+  when:
+    - caddy_ssl_cert != ""
+    - caddy_ssl == True
+  notify: Restart caddy

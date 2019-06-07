@@ -1,0 +1,10 @@
+---
+# tasks file for caddy
+- name: Install caddy
+  include_tasks: install.yml
+
+- name: Setup caddy
+  include_tasks: setup.yml
+
+- name: Setup caddy services
+  include_tasks: service.yml

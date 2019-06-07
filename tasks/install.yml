@@ -1,0 +1,35 @@
+---
+- name: Create caddy configs directory
+  file:
+    path: "{{ caddy_configs_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create caddy directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - "{{ caddy_root_dir }}"
+    - "{{ caddy_root_dir }}/bin"
+
+- name: Create caddy state directory
+  file:
+    path: "{{ caddy_root_dir }}/.caddy"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Download caddy binary
+  get_url:
+    url: "{{ caddy_release_url }}"
+    dest: "{{ caddy_root_dir }}/bin/caddy"
+    owner: root
+    group: root
+    mode: 0755

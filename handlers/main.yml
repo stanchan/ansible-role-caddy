@@ -1,0 +1,8 @@
+---
+# handlers file for caddy
+- name: Restart caddy
+  systemd:
+    name: "{{ caddy_service_name }}"
+    enabled: yes
+    daemon-reload: yes
+    state: started

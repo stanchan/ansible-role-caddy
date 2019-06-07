@@ -1,0 +1,33 @@
+---
+# defaults file for caddy
+systemd_service_dir: /etc/systemd/system
+caddy_service_name: caddy
+
+caddy_user: root
+caddy_group: root
+
+caddy_version: 0.11.4
+caddy_release_url: "https://s3-us-west-2.amazonaws.com/shift-release-repo/caddy/{{ caddy_version }}/caddy"
+caddy_root_dir: /opt/caddy
+caddy_bin_dir: "{{ caddy_root_dir }}/bin"
+caddy_configs_dir: /etc/caddy
+caddy_config_file: "{{ caddy_configs_dir }}/Caddyfile"
+caddy_config_template: ""
+caddy_extra_options: --log stdout --agree=false
+caddy_path: /bin:/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+
+caddy_limit_nofile: 65356
+caddy_limit_nproc: 65356
+
+caddy_ssl_gen_configs:
+  country: ""
+  state: ""
+  city: ""
+  org: ""
+  unit: ""
+  email: ""
+caddy_ssl: yes
+caddy_ssl_key: ""
+caddy_ssl_key_file: "{{ caddy_configs_dir }}/server.key"
+caddy_ssl_cert: ""
+caddy_ssl_cert_file: "{{ caddy_configs_dir }}/server.crt"
