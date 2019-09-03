@@ -6,7 +6,7 @@ caddy_service_name: caddy
 caddy_user: root
 caddy_group: root
 
-caddy_version: 0.11.4
+caddy_version: 1.0.3
 caddy_release_url: "https://s3-us-west-2.amazonaws.com/shift-release-repo/caddy/{{ caddy_version }}/caddy"
 caddy_root_dir: /opt/caddy
 caddy_bin_dir: "{{ caddy_root_dir }}/bin"
