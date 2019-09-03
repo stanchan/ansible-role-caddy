@@ -19,6 +19,7 @@ caddy_path: /bin:/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 caddy_limit_nofile: 65356
 caddy_limit_nproc: 65356
 
+caddy_ssl_common_name: "{{ ansible_fqdn }}"
 caddy_ssl_gen_configs:
   country: ""
   state: ""
