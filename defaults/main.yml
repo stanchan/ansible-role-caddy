@@ -21,12 +21,14 @@ caddy_limit_nproc: 65356
 
 caddy_ssl_common_name: "{{ ansible_fqdn }}"
 caddy_ssl_gen_configs:
-  country: ""
-  state: ""
-  city: ""
-  org: ""
-  unit: ""
-  email: ""
+  country: US
+  state: CA
+  city: San Francisco
+  org: Engineering
+  unit: Development
+  email: admin@shift-labs.com
+  hash: 256
+  expire: 365
 caddy_ssl: yes
 caddy_ssl_key: ""
 caddy_ssl_key_file: "{{ caddy_configs_dir }}/server.key"

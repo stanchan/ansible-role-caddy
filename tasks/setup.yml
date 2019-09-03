@@ -35,7 +35,7 @@
   register: check_cert
 
 - name: Create self-signed SSL cert
-  shell: 'openssl req -new -newkey rsa:4096 -nodes -x509 -rand /dev/urandom -sha256 -days 365 -subj "/C={{ caddy_ssl_gen_configs.country }}/ST={{ caddy_ssl_gen_configs.state }}/L={{ caddy_ssl_gen_configs.city }}/O={{ caddy_ssl_gen_configs.org }}/OU={{ caddy_ssl_gen_configs.unit }}/CN={{ caddy_ssl_common_name }}/emailAddress={{ caddy_ssl_gen_configs.email }}" -keyout {{ caddy_ssl_key_file }} -out {{ caddy_ssl_cert_file }}'
+  shell: 'openssl req -new -newkey rsa:4096 -nodes -x509 -rand /dev/urandom -sha{{ caddy_ssl_gen_configs.hash }} -days {{ caddy_ssl_gen_configs.expire }} -subj "/C={{ caddy_ssl_gen_configs.country }}/ST={{ caddy_ssl_gen_configs.state }}/L={{ caddy_ssl_gen_configs.city }}/O={{ caddy_ssl_gen_configs.org }}/OU={{ caddy_ssl_gen_configs.unit }}/CN={{ caddy_ssl_common_name }}/emailAddress={{ caddy_ssl_gen_configs.email }}" -keyout {{ caddy_ssl_key_file }} -out {{ caddy_ssl_cert_file }}'
   args:
     creates: "{{ caddy_ssl_cert_file }}"
   when:
